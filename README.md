@@ -21,7 +21,7 @@ My instructions and setup guides for AI coding agents (Claude Code, Cursor, VS C
 
 `AGENTS.md` tells the agent to read the standards. The subagents each read the standards for their own area. The workflows run the subagents in a fixed order, so every feature or bug fix gets the same plan, test, and review steps.
 
-You do not have to name anything. For a plain prompt, `AGENTS.md` has a routing rule: small edits are done directly, bugs go to the test-engineer first, and larger changes go to the architect first, then the engineers, tests, and review. This is an instruction, so Claude usually follows it but may occasionally skip a step. The slash commands run the same steps in a fixed order every time, and they are manual only: Claude never starts them on its own. To force a specific agent, name it in the prompt.
+You do not have to name anything. For a plain prompt, `AGENTS.md` has a routing rule: small edits and small bugs with an obvious cause are done directly (a small bug still gets a test), other bugs go to the test-engineer first, and larger changes go to the architect first, then the engineers, tests, and review. Subagents whose work is independent run in parallel. This is an instruction, so Claude usually follows it but may occasionally skip a step. The slash commands run the same steps in a fixed order every time, and they are manual only: Claude never starts them on its own. To force a specific agent, name it in the prompt.
 
 ## Using this in a new project
 

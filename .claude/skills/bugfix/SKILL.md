@@ -10,7 +10,7 @@ Fix this bug: $ARGUMENTS
 Follow these steps in order.
 
 1. **Reproduce.** Find the code path that causes the bug. Use the `test-engineer` subagent to write a test that fails because of this bug, and confirm it fails for the right reason. If you cannot reproduce it, stop and tell the user what you tried.
-2. **Fix.** Use the matching engineer subagent (`frontend-engineer`, `backend-engineer`, `ai-engineer`, or `devops-engineer`) to make the smallest change that fixes the root cause. Do not fix symptoms or refactor nearby code.
+2. **Fix.** Use the matching engineer subagent (`frontend-engineer`, `backend-engineer`, `ai-engineer`, or `devops-engineer`) to make the smallest change that fixes the root cause. Pass it the failing test's path and the code path you found in step 1, so it starts there instead of searching again. Do not fix symptoms or refactor nearby code.
 3. **Verify.** Run the new test and the full test suite. Both must pass.
 4. **Review.** Use the `code-reviewer` subagent on the change, including new untracked files. Tell it the tests already ran in step 3, so it does not run them again. Fix any "Must fix" items and re-verify.
 5. **Report.**

@@ -35,10 +35,11 @@ When the user gives a task without a slash command, choose the path by size:
 
 - **Question or explanation**: answer directly. Do not use agents.
 - **Small edit** (a typo, a rename, a one-file tweak with no new behavior): do it directly, then run the project's lint and tests.
-- **Bug fix**: delegate to `test-engineer` for a failing test first, then to the matching engineer, then `code-reviewer`.
+- **Small bug** (the cause is clear and the fix is a few lines in one file): fix it directly, add a test that fails without the fix, then run the project's lint and tests.
+- **Bug fix** (any other bug, or a small one whose cause turns out to be unclear): delegate to `test-engineer` for a failing test first, then to the matching engineer, then `code-reviewer`.
 - **Non-trivial change** (new behavior, several files, a schema change, or a new module or service): delegate to `architect` first and show the plan before any code is written. Then delegate each task to the matching engineer, then `test-engineer`, then `code-reviewer`.
 
-Fix any "Must fix" finding before reporting the work as done. Open or review a pull request only when the user asks for it.
+Start subagents in parallel when their work touches different files and does not depend on each other's results, for example a frontend and a backend task against an agreed API. Otherwise run them one at a time. Fix any "Must fix" finding before reporting the work as done. Open or review a pull request only when the user asks for it.
 
 ## Workflows
 
