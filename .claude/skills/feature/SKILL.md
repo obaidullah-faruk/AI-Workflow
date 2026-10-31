@@ -11,7 +11,7 @@ If the argument is a file path, read it and treat its acceptance criteria as the
 
 Follow these steps in order. Do not skip any.
 
-1. **Plan.** Use the `architect` subagent to produce an approach and an ordered task list. Show the plan to the user and wait for approval before changing any code.
+1. **Plan.** Use the `architect` subagent to produce an approach and an ordered task list. Show the plan to the user and wait for approval before changing any code. If the plan includes a decision record, save it to `docs/decisions/` with the next free number once the user approves.
 2. **Implement.** For each task, use the subagent named in the plan (`frontend-engineer`, `backend-engineer`, `ai-engineer`, or `devops-engineer`). Run tasks one at a time unless they touch different files and do not depend on each other.
 3. **Test.** Use the `test-engineer` subagent to add tests for the new behavior and run the full test suite.
 4. **Review.** Use the `code-reviewer` subagent on the full change, including new untracked files. Tell it the tests were already run in step 3, so it does not run them again.

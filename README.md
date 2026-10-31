@@ -10,8 +10,11 @@ My instructions and setup guides for AI coding agents (Claude Code, Cursor, VS C
 | [AGENTS.md](AGENTS.md) | The instructions file. Copy it into the root of a new project. |
 | [docs/standards/](docs/standards/) | Engineering standards the agents follow: general, frontend, backend, database, AI, infrastructure, testing. |
 | [.claude/agents/](.claude/agents/) | Specialized subagents (architect, frontend, backend, AI, devops, test, code reviewer, PR creator, PR reviewer). |
-| [.claude/skills/](.claude/skills/) | Reusable workflows run as slash commands: `/feature`, `/bugfix`, `/review`, `/pr`, `/pr-review`. |
-| [.claude/settings.json](.claude/settings.json) | Blocks `terraform apply`/`destroy`, force-push, and `gh pr merge`, so the safety rules are enforced, not only requested. |
+| [.claude/skills/](.claude/skills/) | Reusable workflows run as slash commands: `/setup`, `/feature`, `/bugfix`, `/review`, `/pr`, `/pr-review`. |
+| [.claude/settings.json](.claude/settings.json) | Blocks `terraform apply`/`destroy`, force-push, and `gh pr merge`, so the safety rules are enforced, not only requested. Allows read-only `git` and `gh` commands without a prompt, and runs the format hook. |
+| [.claude/hooks/format-edited-file.sh](.claude/hooks/format-edited-file.sh) | Formats each file right after Claude edits it, using only formatters the project already uses (Prettier, Biome, Ruff, Black, gofmt, terraform fmt, rustfmt). Needs `jq`. |
+| [docs/specs/TEMPLATE.md](docs/specs/TEMPLATE.md) | Template for a feature spec to pass to `/feature`. |
+| [docs/decisions/](docs/decisions/) | Records of architecture decisions, so agents follow past choices instead of re-deciding them. |
 | [docs/context7.md](docs/context7.md) | How to install and use Context7, which gives agents up-to-date library docs. |
 
 ## How the pieces fit
@@ -22,10 +25,10 @@ You do not have to name anything. For a plain prompt, `AGENTS.md` has a routing 
 
 ## Using this in a new project
 
-1. Copy `CLAUDE.md`, `AGENTS.md`, `docs/standards/`, and `.claude/` into the project root. Add `.claude/settings.local.json` to the project's `.gitignore`. If the project already has a `.claude/settings.json`, merge the `deny` list into it.
-2. Fill in the `<...>` placeholders in each `docs/standards/` file, and delete files for layers you do not have.
+1. Copy `CLAUDE.md`, `AGENTS.md`, `docs/`, and `.claude/` into the project root. Add `.claude/settings.local.json` to the project's `.gitignore`. If the project already has a `.claude/settings.json`, merge the `permissions` and `hooks` entries into it.
+2. Run `claude`, then `/setup`. It fills in the `<...>` placeholders in `docs/standards/` from your repo, offers to delete the standards for layers you do not have, and allows your test and lint commands. Fill in by hand anything it reports as not found.
 3. Claude Code reads `CLAUDE.md`, not `AGENTS.md`. The included `CLAUDE.md` contains the single line `@AGENTS.md`, which loads `AGENTS.md`. If your project already has a `CLAUDE.md`, add that line to it instead.
-4. Check it worked: run `claude`, then `/agents`. You should see the nine agents listed as project agents. Typing `/` should show `feature`, `bugfix`, `review`, `pr`, and `pr-review`.
+4. Check it worked: run `claude`, then `/agents`. You should see the nine agents listed as project agents. Typing `/` should show `setup`, `feature`, `bugfix`, `review`, `pr`, and `pr-review`. Run `/hooks` to see the format hook under PostToolUse.
 5. For the PR agents, install the [GitHub CLI](https://cli.github.com) and run `gh auth login`. Check with `gh auth status`; it should say you are logged in to github.com.
 
 ## What the standards enforce
@@ -115,7 +118,7 @@ Done when:
 Limits: do not load all orders into memory; use the existing `orders` module interface.
 ```
 
-You can also point `/feature` at a written spec: `/feature docs/specs/export-orders.md`. Put the acceptance criteria in that file, and the agents will treat them as the definition of done.
+You can also point `/feature` at a written spec: `/feature docs/specs/export-orders.md`. Start from [docs/specs/TEMPLATE.md](docs/specs/TEMPLATE.md). The agents treat its "Done when" list as the definition of done.
 
 **Ask for a plan only**
 

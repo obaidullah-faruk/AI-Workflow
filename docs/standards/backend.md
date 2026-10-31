@@ -8,7 +8,7 @@ Fill in the `<...>` placeholders for your project, then delete this line. Databa
 
 ## Architecture: loosely coupled, deployable as one or many
 
-Start as a **modular monolith**: one deployable app, split into modules by business capability (`users`, `billing`, `orders`). Move a module into its own microservice only for a concrete reason: it must scale independently, a separate team owns it, or it needs failure isolation or a different tech stack. Record that decision in the plan. Do not split "just in case".
+Start as a **modular monolith**: one deployable app, split into modules by business capability (`users`, `billing`, `orders`). Move a module into its own microservice only for a concrete reason: it must scale independently, a separate team owns it, or it needs failure isolation or a different tech stack. Record that decision in `docs/decisions/`. Do not split "just in case".
 
 The rules below keep that move cheap, because a module that follows them can be extracted without rewriting its callers.
 

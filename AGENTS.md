@@ -19,7 +19,7 @@ Use Context7 only when you are unsure of a library API, its configuration, or ve
 
 ## Specialized agents
 
-Subagents live in `.claude/agents/`. Delegate to them instead of doing everything in the main session.
+Subagents live in `.claude/agents/`. Delegate to them instead of doing everything in the main session. If your tool cannot run subagents, follow the same steps yourself in the same order, reading the agent file for each step.
 
 - `architect`: plans non-trivial work before any code is written.
 - `frontend-engineer`, `backend-engineer`, `devops-engineer`: implement in their own area only.
@@ -44,7 +44,8 @@ Fix any "Must fix" finding before reporting the work as done. Open or review a p
 
 Run these as slash commands. They are in `.claude/skills/`.
 
-- `/feature <description or spec path>`: plan, implement, test, review.
+- `/setup`: one-time setup that fills in the standards from the repo.
+- `/feature <description or spec path>`: plan, implement, test, review. Specs follow `docs/specs/TEMPLATE.md`.
 - `/bugfix <bug description>`: reproduce with a test, fix, verify, review.
 - `/review`: review uncommitted changes before committing.
 - `/pr [issue number]`: review the branch, then open a draft pull request.

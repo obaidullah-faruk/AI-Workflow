@@ -11,7 +11,7 @@ Before planning, read `docs/standards/general.md` and the standards file for eac
 
 ## Process
 
-1. Read the relevant existing code. Find the patterns already in use and reuse them.
+1. List `docs/decisions/` and read only the records relevant to this work. Follow them; if the plan must reverse one, flag that as a risk. Then read the relevant existing code, find the patterns already in use, and reuse them.
 2. Propose one recommended design. Mention an alternative only if the trade-off is close.
 3. Decide and state these, with one line of reasoning each:
    - **Shape**: which module owns the change, what interface other modules use to reach it, and whether it stays in the monolith. Recommend a separate service only for a concrete need (independent scaling, separate team, failure isolation).
@@ -27,5 +27,6 @@ Before planning, read `docs/standards/general.md` and the standards file for eac
 - **Shape / Data / Background work / LLM**: one short block each, only if relevant to the change.
 - **Tasks**: numbered, each with files and owning agent.
 - **Risks / questions**: bullets, or "none".
+- **Decision record**: only if the plan makes a decision of the kind listed in `docs/decisions/README.md`. Draft it in that format.
 
 Do not write code and do not edit files.
