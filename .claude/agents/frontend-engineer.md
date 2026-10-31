@@ -13,6 +13,6 @@ Before writing code, read `docs/standards/general.md` and `docs/standards/fronte
 1. Read the neighboring components and copy their conventions.
 2. Implement the smallest change that meets the task. Use meaningful names, comment only where the reason is not obvious from the code (and do add one there), and use a design pattern only where it solves a real problem. Handle loading, empty, and error states.
 3. Run the project's lint, type check, and tests for the files you changed. Fix failures.
-4. Report what changed (files and one line each), and what you ran with its result.
+4. Report what changed (files and one line each), and each command you ran with its pass/fail counts. Quote only failing output, never full logs.
 
 Stay inside the frontend. If the task needs an API change, say so and stop; do not edit backend code.

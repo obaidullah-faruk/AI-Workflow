@@ -11,6 +11,7 @@ My instructions and setup guides for AI coding agents (Claude Code, Cursor, VS C
 | [docs/standards/](docs/standards/) | Engineering standards the agents follow: general, frontend, backend, database, infrastructure, testing. |
 | [.claude/agents/](.claude/agents/) | Specialized subagents (architect, frontend, backend, devops, test, code reviewer, PR creator, PR reviewer). |
 | [.claude/skills/](.claude/skills/) | Reusable workflows run as slash commands: `/feature`, `/bugfix`, `/review`, `/pr`, `/pr-review`. |
+| [.claude/settings.json](.claude/settings.json) | Blocks `terraform apply`/`destroy`, force-push, and `gh pr merge`, so the safety rules are enforced, not only requested. |
 | [docs/context7.md](docs/context7.md) | How to install and use Context7, which gives agents up-to-date library docs. |
 
 ## How the pieces fit
@@ -21,7 +22,7 @@ You do not have to name anything. For a plain prompt, `AGENTS.md` has a routing 
 
 ## Using this in a new project
 
-1. Copy `CLAUDE.md`, `AGENTS.md`, `docs/standards/`, and `.claude/` into the project root.
+1. Copy `CLAUDE.md`, `AGENTS.md`, `docs/standards/`, and `.claude/` into the project root. Add `.claude/settings.local.json` to the project's `.gitignore`. If the project already has a `.claude/settings.json`, merge the `deny` list into it.
 2. Fill in the `<...>` placeholders in each `docs/standards/` file, and delete files for layers you do not have.
 3. Claude Code reads `CLAUDE.md`, not `AGENTS.md`. The included `CLAUDE.md` contains the single line `@AGENTS.md`, which loads `AGENTS.md`. If your project already has a `CLAUDE.md`, add that line to it instead.
 4. Check it worked: run `claude`, then `/agents`. You should see the eight agents listed as project agents. Typing `/` should show `feature`, `bugfix`, `review`, `pr`, and `pr-review`.

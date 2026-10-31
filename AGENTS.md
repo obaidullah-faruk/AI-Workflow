@@ -2,21 +2,19 @@
 
 ## Engineering standards
 
-Read `docs/standards/general.md` before any task, then the file for the layer you are touching. Follow them over your own defaults.
+Before you write or review code yourself, read `docs/standards/general.md` (naming, comments, design patterns, definition of done), then the file for the layer you are touching. Follow them over your own defaults. Skip this when you only answer a question or hand the work to a subagent, because each subagent reads its own standards.
 
 - `docs/standards/frontend.md`: UI code.
 - `docs/standards/backend.md`: APIs, module boundaries, background jobs.
-- `docs/standards/database.md`: queries, N+1, indexing, migrations, database portability.
+- `docs/standards/database.md`: queries, N+1, indexing, migrations, database portability. Read it only when queries, schema, or migrations change.
 - `docs/standards/infrastructure.md`: Docker, Terraform, CI/CD.
 - `docs/standards/testing.md`: writing and running tests.
 
-## Code quality
+If a standards file still has `<...>` placeholders, take the real values from the repo (`package.json`, `Makefile`, `pyproject.toml`, CI config). If a command does not exist there either, say so instead of guessing.
 
-- Use meaningful names: functions are verbs, booleans read as questions, no abbreviations or names like `data` and `temp`.
-- Comment where a reader would otherwise have to guess: the reason for a non-obvious choice, a business rule, a workaround, an assumption. Never narrate what the code does. Remove commented-out code. Decide this yourself while writing; do not wait to be asked.
-- Use a design pattern (strategy, factory, repository, adapter, observer) when it solves a real problem, and name it. Otherwise use a plain function.
+## Library docs
 
-Details are in `docs/standards/general.md`.
+Use Context7 only when you are unsure of a library API, its configuration, or version-specific behavior. Do not look up APIs you already know.
 
 ## Specialized agents
 

@@ -4,7 +4,11 @@ Fill in the `<...>` placeholders for your project, then delete this line.
 
 ## Tools
 
-- Unit/integration: `<Vitest / Jest / pytest / JUnit>`. End-to-end: `<Playwright / Cypress>`. Run all: `<command>`.
+- Unit/integration: `<Vitest / Jest / pytest / JUnit>`. End-to-end: `<Playwright / Cypress>`.
+
+## Commands
+
+- All tests: `<npm test>`. One file: `<npm test -- path/to/file>`. End-to-end: `<npx playwright test>`.
 
 ## What to test
 

@@ -10,12 +10,13 @@ You are the PR creator. Mindset: you write the pull request the reviewer wishes 
 ## Process
 
 1. Run `git status`, `git branch --show-current`, and `gh auth status`. Stop and report if `gh` is not logged in, the working tree has uncommitted changes, or the current branch is `main`.
-2. Find the base branch: `gh repo view --json defaultBranchRef -q .defaultBranchRef.name`.
-3. Read the full change: `git log <base>..HEAD --oneline` and `git diff <base>...HEAD`. Base the description on what the diff actually does, not on commit messages alone.
-4. If `.github/pull_request_template.md` exists, fill in that template. Otherwise use the format below.
-5. Check that tests exist for new behavior. If they do not, say so in the description instead of hiding it.
-6. Push the branch if it has no upstream (`git push -u origin HEAD`), then run `gh pr create`. Create a draft (`--draft`) unless the user asked for a ready PR.
-7. Report the PR URL.
+2. Run `gh pr view --json url,state`. If the branch already has an open PR, report its URL and stop.
+3. Find the base branch: `gh repo view --json defaultBranchRef -q .defaultBranchRef.name`.
+4. Read the full change: `git log <base>..HEAD --oneline` and `git diff <base>...HEAD`. Base the description on what the diff actually does, not on commit messages alone.
+5. If `.github/pull_request_template.md` exists, fill in that template. Otherwise use the format below.
+6. Check that tests exist for new behavior. If they do not, say so in the description instead of hiding it.
+7. Push the branch if it has no upstream (`git push -u origin HEAD`), then run `gh pr create`. Create a draft (`--draft`) unless the user asked for a ready PR.
+8. Report the PR URL.
 
 ## Format
 
