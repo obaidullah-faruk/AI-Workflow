@@ -8,8 +8,8 @@ My instructions and setup guides for AI coding agents (Claude Code, Cursor, VS C
 |------|------------|
 | [CLAUDE.md](CLAUDE.md) | One line, `@AGENTS.md`, so Claude Code loads the instructions file. Copy it with `AGENTS.md`. |
 | [AGENTS.md](AGENTS.md) | The instructions file. Copy it into the root of a new project. |
-| [docs/standards/](docs/standards/) | Engineering standards the agents follow: general, frontend, backend, database, infrastructure, testing. |
-| [.claude/agents/](.claude/agents/) | Specialized subagents (architect, frontend, backend, devops, test, code reviewer, PR creator, PR reviewer). |
+| [docs/standards/](docs/standards/) | Engineering standards the agents follow: general, frontend, backend, database, AI, infrastructure, testing. |
+| [.claude/agents/](.claude/agents/) | Specialized subagents (architect, frontend, backend, AI, devops, test, code reviewer, PR creator, PR reviewer). |
 | [.claude/skills/](.claude/skills/) | Reusable workflows run as slash commands: `/feature`, `/bugfix`, `/review`, `/pr`, `/pr-review`. |
 | [.claude/settings.json](.claude/settings.json) | Blocks `terraform apply`/`destroy`, force-push, and `gh pr merge`, so the safety rules are enforced, not only requested. |
 | [docs/context7.md](docs/context7.md) | How to install and use Context7, which gives agents up-to-date library docs. |
@@ -25,7 +25,7 @@ You do not have to name anything. For a plain prompt, `AGENTS.md` has a routing 
 1. Copy `CLAUDE.md`, `AGENTS.md`, `docs/standards/`, and `.claude/` into the project root. Add `.claude/settings.local.json` to the project's `.gitignore`. If the project already has a `.claude/settings.json`, merge the `deny` list into it.
 2. Fill in the `<...>` placeholders in each `docs/standards/` file, and delete files for layers you do not have.
 3. Claude Code reads `CLAUDE.md`, not `AGENTS.md`. The included `CLAUDE.md` contains the single line `@AGENTS.md`, which loads `AGENTS.md`. If your project already has a `CLAUDE.md`, add that line to it instead.
-4. Check it worked: run `claude`, then `/agents`. You should see the eight agents listed as project agents. Typing `/` should show `feature`, `bugfix`, `review`, `pr`, and `pr-review`.
+4. Check it worked: run `claude`, then `/agents`. You should see the nine agents listed as project agents. Typing `/` should show `feature`, `bugfix`, `review`, `pr`, and `pr-review`.
 5. For the PR agents, install the [GitHub CLI](https://cli.github.com) and run `gh auth login`. Check with `gh auth status`; it should say you are logged in to github.com.
 
 ## What the standards enforce
@@ -35,6 +35,7 @@ You do not have to name anything. For a plain prompt, `AGENTS.md` has a routing 
 - **Easy database migration.** All database access sits behind repositories. Vendor-specific SQL is isolated and marked `DB-SPECIFIC:`. Schema changes use expand, migrate, contract.
 - **Fast queries.** No N+1 queries, no unbounded lists, an index for every new query, and `EXPLAIN` before merging. Tests assert query counts.
 - **Background workers.** Slow, unreliable, or retryable work goes to idempotent jobs behind a queue interface.
+- **LLM features.** Model calls sit behind an adapter, outputs are validated against a schema, prompts are cache-friendly and capped with `max_tokens`, RAG filters by permissions, and every prompt change is measured with evals.
 
 - **Readable code.** Meaningful names, comments only where the reason is not obvious (agents decide this themselves, not too many and not too few), and a named design pattern (strategy, factory, repository, adapter, observer) only where it solves a real problem.
 
@@ -186,6 +187,13 @@ Cover the edge cases: zero quantity, expired code, and two codes at once.
 ```text
 Use the devops-engineer agent to write a multi-stage Dockerfile for the API and a separate
 entry point for the background worker. Do not deploy anything.
+```
+
+```text
+Use the ai-engineer agent to add a support chatbot that answers from our help-center articles.
+Answers must cite the article. Users only see articles for their own plan.
+Keep the average cost under 3,000 input tokens per question, and add eval cases for
+questions the articles do not answer.
 ```
 
 ```text

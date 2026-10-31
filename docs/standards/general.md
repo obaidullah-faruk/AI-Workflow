@@ -68,4 +68,4 @@ A task is done only when all of these are true:
 
 ## Where the other standards are
 
-- [frontend.md](frontend.md), [backend.md](backend.md), [database.md](database.md), [infrastructure.md](infrastructure.md), [testing.md](testing.md)
+- [frontend.md](frontend.md), [backend.md](backend.md), [database.md](database.md), [ai.md](ai.md), [infrastructure.md](infrastructure.md), [testing.md](testing.md)

@@ -7,6 +7,7 @@ Before you write or review code yourself, read `docs/standards/general.md` (nami
 - `docs/standards/frontend.md`: UI code.
 - `docs/standards/backend.md`: APIs, module boundaries, background jobs.
 - `docs/standards/database.md`: queries, N+1, indexing, migrations, database portability. Read it only when queries, schema, or migrations change.
+- `docs/standards/ai.md`: LLM and embedding calls, prompts, RAG, agents and tools, evals.
 - `docs/standards/infrastructure.md`: Docker, Terraform, CI/CD.
 - `docs/standards/testing.md`: writing and running tests.
 
@@ -22,6 +23,7 @@ Subagents live in `.claude/agents/`. Delegate to them instead of doing everythin
 
 - `architect`: plans non-trivial work before any code is written.
 - `frontend-engineer`, `backend-engineer`, `devops-engineer`: implement in their own area only.
+- `ai-engineer`: implements anything that calls an LLM or embedding API (prompts, RAG, chatbots, agents, evals).
 - `test-engineer`: writes tests, and reproduces bugs with a failing test.
 - `code-reviewer`: reviews every change before it is committed.
 - `pr-creator`: opens a GitHub pull request for the current branch (uses `gh`).

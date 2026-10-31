@@ -18,6 +18,7 @@ Fill in the `<...>` placeholders for your project, then delete this line.
 - Every bug fix starts with a test that fails for that bug.
 - List endpoints and repository methods that load related data get a query-count test, so an N+1 fails the build.
 - Background jobs get a test that runs the same job twice and checks the result is the same.
+- Code that calls an LLM uses a fake client in tests and gets eval cases; see the Evals section of [ai.md](ai.md).
 
 ## Rules
 
