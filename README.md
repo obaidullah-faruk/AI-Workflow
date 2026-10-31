@@ -1,6 +1,6 @@
 # AI Workflow
 
-My instructions and setup guides for AI coding agents (Claude Code, Cursor, VS Code). Copy the pieces you need into a new project.
+My instructions and setup guides for AI coding agents (Claude Code, Cursor, VS Code), mainly for Claude. Copy the pieces you need into a new project.
 
 ## Contents
 
@@ -28,21 +28,8 @@ You do not have to name anything. For a plain prompt, `AGENTS.md` has a routing 
 1. Copy `CLAUDE.md`, `AGENTS.md`, `docs/`, and `.claude/` into the project root. Add `.claude/settings.local.json` to the project's `.gitignore`. If the project already has a `.claude/settings.json`, merge the `permissions` and `hooks` entries into it.
 2. Run `claude`, then `/setup`. It fills in the `<...>` placeholders in `docs/standards/` from your repo, offers to delete the standards for layers you do not have, and allows your test and lint commands. Fill in by hand anything it reports as not found.
 3. Claude Code reads `CLAUDE.md`, not `AGENTS.md`. The included `CLAUDE.md` contains the single line `@AGENTS.md`, which loads `AGENTS.md`. If your project already has a `CLAUDE.md`, add that line to it instead.
-4. Check it worked: run `claude`, then `/agents`. You should see the nine agents listed as project agents. Typing `/` should show `setup`, `feature`, `bugfix`, `review`, `pr`, and `pr-review`. Run `/hooks` to see the format hook under PostToolUse.
+4. Check it worked: run `claude` and ask "Which subagents can you use?". It should name the nine project agents: `architect`, `frontend-engineer`, `backend-engineer`, `ai-engineer`, `devops-engineer`, `test-engineer`, `code-reviewer`, `pr-creator`, and `pr-reviewer`. If one is missing, check that its file in `.claude/agents/` starts with a `---` frontmatter block containing `name:` and `description:`. Typing `/` should show `setup`, `feature`, `bugfix`, `review`, `pr`, and `pr-review`. Run `/hooks` to see the format hook under PostToolUse.
 5. For the PR agents, install the [GitHub CLI](https://cli.github.com) and run `gh auth login`. Check with `gh auth status`; it should say you are logged in to github.com.
-
-## What the standards enforce
-
-- **Loose coupling.** Code is split into modules by business capability. Modules talk only through small interfaces and events, and never touch each other's tables. Business logic depends on interfaces, not on the framework, the ORM, or a vendor SDK.
-- **Monolith or microservices.** Start as a modular monolith. Because of the module rules, a module can be moved into its own service later without rewriting its callers. The architect agent recommends a separate service only for a concrete need.
-- **Easy database migration.** All database access sits behind repositories. Vendor-specific SQL is isolated and marked `DB-SPECIFIC:`. Schema changes use expand, migrate, contract.
-- **Fast queries.** No N+1 queries, no unbounded lists, an index for every new query, and `EXPLAIN` before merging. Tests assert query counts.
-- **Background workers.** Slow, unreliable, or retryable work goes to idempotent jobs behind a queue interface.
-- **LLM features.** Model calls sit behind an adapter, outputs are validated against a schema, prompts are cache-friendly and capped with `max_tokens`, RAG filters by permissions, and every prompt change is measured with evals.
-
-- **Readable code.** Meaningful names, comments only where the reason is not obvious (agents decide this themselves, not too many and not too few), and a named design pattern (strategy, factory, repository, adapter, observer) only where it solves a real problem.
-
-Reviewers (`code-reviewer`, `pr-reviewer`) treat coupling, N+1, and missing-index violations as "Must fix", and naming, comment, and pattern issues as "Should fix".
 
 ## How to use the workflows
 
@@ -71,37 +58,6 @@ Also:
 - Name design patterns instead of explaining them: "use the strategy pattern", "put this behind a repository interface".
 - Say what correct looks like, such as an example input and the output you expect.
 - Mention scale when it matters: "about 50,000 orders per customer" changes the indexing and pagination choices.
-
-### Weak versus strong prompts
-
-Weak:
-
-```text
-/feature add task notifications
-```
-
-Strong:
-
-```text
-/feature Let users follow a task so they get an email when it changes.
-
-Where: a new `followers` module in the backend, and a "Follow" button on the task page in the frontend.
-
-Done when:
-- A signed-in user can follow or unfollow any task they can see.
-- Followers get one email when the task's status or assignee changes, not one per field.
-- A user never gets an email about their own change.
-- The task page shows the follower count.
-
-Limits:
-- Do not change the `tasks` module. `followers` learns about changes through a `TaskChanged` event, not by reading the `tasks` tables.
-- Sending emails must not slow down the request.
-- A popular task can have thousands of followers.
-```
-
-Why this works: the module name and the "learns through an event" line make the architect keep the modules separate. "Must not slow down the request" and "thousands of followers" lead it to a background job that sends in batches, a unique index on `(task_id, user_id)`, and a follower count that does not scan the table.
-
-You do not need to say anything about code style or comments. The agents follow the standards and add comments only where the reason is not obvious.
 
 ### Sample prompts
 
