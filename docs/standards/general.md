@@ -22,9 +22,17 @@ Rules for every task, in every language. Keep this file short; agents read it ea
 
 **Comments**
 
-- Write code that needs no comments. Do not narrate what the code does, restate the function name, or leave commented-out code, TODOs without an owner, or change history.
-- Add a comment only when the code cannot say *why*: a workaround, a business rule that looks wrong but is right, a non-obvious performance choice, or a `DB-SPECIFIC:` marker.
-- Exception: public API documentation (docstrings or JSDoc) on exported functions and types, if the project already uses them.
+- Comment where a reader would otherwise have to guess: not more, not less. Decide this while writing the code; the user will not ask for it.
+- Do comment:
+  - why a choice was made when a simpler-looking alternative exists;
+  - a business rule or constraint the code cannot show (a rounding rule, a legal requirement, a 30-day window);
+  - a workaround, with the reason and when it can be removed;
+  - a non-obvious assumption, side effect, or ordering requirement (units, time zone, "caller must hold the lock");
+  - a short summary above a complex algorithm or query;
+  - a `DB-SPECIFIC:` marker, and public API documentation on exported functions if the project already uses it.
+- Do not comment what the code does, restate a name, add section banners, record change history, leave commented-out code, or leave a TODO without an issue number.
+- Test: a developer who knows the language but not this project should understand every non-obvious decision without asking. If a comment is only needed to explain what a line does, rename or restructure the code instead.
+- Keep each comment to one or two sentences, and update it in the same change as the code.
 
 **Design patterns**
 

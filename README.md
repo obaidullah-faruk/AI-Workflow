@@ -17,6 +17,8 @@ My instructions and setup guides for AI coding agents (Claude Code, Cursor, VS C
 
 `AGENTS.md` tells the agent to read the standards. The subagents each read the standards for their own area. The workflows run the subagents in a fixed order, so every feature or bug fix gets the same plan, test, and review steps.
 
+You do not have to name anything. For a plain prompt, `AGENTS.md` has a routing rule: small edits are done directly, bugs go to the test-engineer first, and larger changes go to the architect first, then the engineers, tests, and review. This is an instruction, so Claude usually follows it but may occasionally skip a step. The slash commands run the same steps in a fixed order every time, and they are manual only: Claude never starts them on its own. To force a specific agent, name it in the prompt.
+
 ## Using this in a new project
 
 1. Copy `CLAUDE.md`, `AGENTS.md`, `docs/standards/`, and `.claude/` into the project root.
@@ -33,7 +35,7 @@ My instructions and setup guides for AI coding agents (Claude Code, Cursor, VS C
 - **Fast queries.** No N+1 queries, no unbounded lists, an index for every new query, and `EXPLAIN` before merging. Tests assert query counts.
 - **Background workers.** Slow, unreliable, or retryable work goes to idempotent jobs behind a queue interface.
 
-- **Readable code.** Meaningful names, no comments that restate the code, and a named design pattern (strategy, factory, repository, adapter, observer) only where it solves a real problem.
+- **Readable code.** Meaningful names, comments only where the reason is not obvious (agents decide this themselves, not too many and not too few), and a named design pattern (strategy, factory, repository, adapter, observer) only where it solves a real problem.
 
 Reviewers (`code-reviewer`, `pr-reviewer`) treat coupling, N+1, and missing-index violations as "Must fix", and naming, comment, and pattern issues as "Should fix".
 
@@ -70,29 +72,31 @@ Also:
 Weak:
 
 ```text
-/feature add comments
+/feature add task notifications
 ```
 
 Strong:
 
 ```text
-/feature Let users comment on a task so teammates can discuss it.
+/feature Let users follow a task so they get an email when it changes.
 
-Where: a new `comments` module in the backend, and a comment list on the task page in the frontend.
+Where: a new `followers` module in the backend, and a "Follow" button on the task page in the frontend.
 
 Done when:
-- A signed-in user can add a comment to a task they can see (max 2000 characters).
-- Comments show newest first, 20 per page, with the author's name.
-- Only the author or a task admin can delete a comment.
-- Task owners get an email when someone else comments.
+- A signed-in user can follow or unfollow any task they can see.
+- Followers get one email when the task's status or assignee changes, not one per field.
+- A user never gets an email about their own change.
+- The task page shows the follower count.
 
 Limits:
-- Do not change the `tasks` module. The comments module reaches it only through its public interface.
-- Sending the email must not slow down the request.
-- A task can have thousands of comments.
+- Do not change the `tasks` module. `followers` learns about changes through a `TaskChanged` event, not by reading the `tasks` tables.
+- Sending emails must not slow down the request.
+- A popular task can have thousands of followers.
 ```
 
-Why this works: the module name and the "do not change `tasks`" line make the architect keep the modules separate. "Must not slow down the request" and "thousands of comments" lead it to a background job, pagination, and an index on `(task_id, created_at)`.
+Why this works: the module name and the "learns through an event" line make the architect keep the modules separate. "Must not slow down the request" and "thousands of followers" lead it to a background job that sends in batches, a unique index on `(task_id, user_id)`, and a follower count that does not scan the table.
+
+You do not need to say anything about code style or comments. The agents follow the standards and add comments only where the reason is not obvious.
 
 ### Sample prompts
 

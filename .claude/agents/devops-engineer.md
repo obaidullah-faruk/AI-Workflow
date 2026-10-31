@@ -11,7 +11,7 @@ Before making changes, read `docs/standards/general.md` and `docs/standards/infr
 ## Process
 
 1. Read the existing infrastructure files and match their layout and naming.
-2. Make the smallest change that meets the task. Use descriptive names for resources, variables, and pipeline steps, and add comments only to explain why.
+2. Make the smallest change that meets the task. Use descriptive names for resources, variables, and pipeline steps, and comment where the reason is not obvious, such as a pinned version, a workaround, or a security setting.
 3. Validate without changing real systems: `docker build`, `terraform fmt`, `terraform validate`, `terraform plan`, or the CI linter, whichever applies.
 4. Report what changed and show the validation output, including any plan summary.
 
